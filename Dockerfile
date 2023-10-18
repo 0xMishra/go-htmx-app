@@ -6,4 +6,4 @@ COPY . .
 
 RUN go build
 
-CMD ["./go-todo-app"]
+CMD ["./go-htmx-app"]

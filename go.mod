@@ -1,3 +1,3 @@
-module github.com/mishra811/go-todo-app
+module github.com/mishra811/go-htmx-app
 
 go 1.19
