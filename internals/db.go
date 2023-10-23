@@ -10,13 +10,7 @@ import (
 	_ "github.com/lib/pq"
 )
 
-type Task struct {
-	Id      int
-	Name    string
-	Content string
-}
-
-func ConnectToDB() {
+func ConnectToDB() *sql.DB {
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
@@ -37,30 +31,5 @@ func ConnectToDB() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	rows, err := db.Query(fmt.Sprintf("SELECT * FROM %s", "tasks"))
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	defer rows.Close()
-
-	tasks := make([]*Task, 0)
-
-	for rows.Next() {
-		task := new(Task)
-		err := rows.Scan(&task.Id, &task.Name, &task.Content)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		tasks = append(tasks, task)
-	}
-	if err = rows.Err(); err != nil {
-		log.Fatal(err)
-	}
-
-	for _, task := range tasks {
-		fmt.Printf("%d,%s,%s\n", task.Id, task.Name, task.Content)
-	}
+	return db
 }
