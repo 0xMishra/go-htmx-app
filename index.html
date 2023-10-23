@@ -2,16 +2,31 @@
 <html lang="en">
 
 <head>
-  <title></title>
+  <title>Task Manager</title>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/htmx/1.9.6/htmx.min.js"></script>
+  <script src="https://unpkg.com/htmx.org@1.9.2"
+    integrity="sha384-L6OqL9pRWyyFU3+/bjdSri+iIphTN/bvYyM37tICVyOJkWZLpP2vGn6VUEXgzg6h"
+    crossorigin="anonymous"></script>
 </head>
 
 <body>
-  <h1 class="mt-10 text-center">{{.Title}}</h1>
-  <p class="mt-10 text-center">{{.Message}}</p>
+  <ul id="task-list" class="list-none text-red-500">
+    {{ range .}} {{ block "film-list-element" .}}
+    <li>{{ .Id }}. {{ .Name }} - {{ .Content }}</li>
+    {{ end }} {{ end }}
+  </ul>
+  <form hx-post="/create" hx-trigger="submit" hx-target="#task-list" hx-swap="beforeend">
+    <div class="">
+      <label for="">name:</label><input type="text" name="name" />
+    </div>
+    <div class="">
+      <label for="">content:</label><input type="text" name="content" />
+    </div>
+
+    <button type="submit">Add</button>
+  </form>
 </body>
 
 </html>

@@ -1,9 +1,11 @@
-FROM golang
+FROM golang:alpine
 
 WORKDIR /usr/src/app
 
+RUN go install github.com/cosmtrek/air@latest
+
 COPY . .
 
-RUN go build
+EXPOSE 8080
 
-CMD ["./go-htmx-app"]
+CMD ["air","server","--port","8080"]

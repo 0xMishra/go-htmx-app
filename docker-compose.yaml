@@ -1,0 +1,26 @@
+version: '0.1'
+
+services:
+  postgres:
+    image: postgres
+    container_name: my_psql
+    env_file:
+      - .env
+    volumes:
+      - psql_data:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '8080:8080'
+    volumes:
+      - .:/usr/src/app
+    depends_on:
+      - postgres
+
+volumes:
+  psql_data:

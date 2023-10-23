@@ -4,49 +4,38 @@ import (
 	"html/template"
 	"log"
 	"net/http"
-	"time"
+
+	"github.com/mishra811/go-htmx-app/internals"
 )
 
-type Task struct {
-	Id          int
-	Content     string
-	isCompleted bool
-	createAt    time.Duration
-	updatedAt   time.Duration
-}
-
-type tasks []Task
+type Task internals.Task
 
 func main() {
+	internals.ConnectToDB()
 	http.HandleFunc("/", handler)
 	http.HandleFunc("/create", createTask)
-	log.Fatal(http.ListenAndServe(":3000", nil))
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
-	templ, err := template.ParseFiles("./index.html")
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
+	templ := template.Must(template.ParseFiles("index.html"))
+
+	tasks := []Task{
+		{Id: 1, Name: "cooking", Content: "cook breakfast"},
 	}
 
-	data := struct {
-		Title   string
-		Message string
-	}{
-		"Welcome to my page",
-		"This is a todo app",
-	}
-
-	err = templ.Execute(w, data)
-
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
+	templ.Execute(w, tasks)
 }
 
 func createTask(w http.ResponseWriter, r *http.Request) {
+	name := r.PostFormValue("name")
+	content := r.PostFormValue("content")
+	templ := template.Must(template.ParseFiles("index.html"))
+
+	templ.ExecuteTemplate(w,
+		"film-list-element",
+		Task{Id: 2, Name: name, Content: content},
+	)
 }
 
 func updateTask(w http.ResponseWriter, r *http.Request) {
