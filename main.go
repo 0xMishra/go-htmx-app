@@ -92,9 +92,14 @@ func createTask(w http.ResponseWriter, r *http.Request) {
 	content := r.PostFormValue("content")
 	templ := template.Must(template.ParseFiles("templates/index.html"))
 
-	_, err := db.Query(
-		fmt.Sprintf("INSERT INTO tasks (Name,Content) VALUES ('%s','%s') ;", name, content),
-	)
+	var id int
+	err := db.QueryRow(
+		fmt.Sprintf(
+			"INSERT INTO tasks (Name,Content) VALUES ('%s','%s') RETURNING Id ;",
+			name,
+			content,
+		),
+	).Scan(&id)
 	if err != nil {
 		log.Fatal(err, http.StatusInternalServerError)
 		return
@@ -102,7 +107,7 @@ func createTask(w http.ResponseWriter, r *http.Request) {
 
 	templ.ExecuteTemplate(w,
 		"film-list-element",
-		Task{Id: 0, Name: name, Content: content},
+		Task{Id: id, Name: name, Content: content},
 	)
 }
 
