@@ -1,74 +1,51 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <title>Task Manager</title>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <script
-      src="https://unpkg.com/htmx.org@1.9.2"
-      integrity="sha384-L6OqL9pRWyyFU3+/bjdSri+iIphTN/bvYyM37tICVyOJkWZLpP2vGn6VUEXgzg6h"
-      crossorigin="anonymous"
-    ></script>
-  </head>
 
-  <body id="body">
-    <ul id="task-list">
-      {{ block "task-list" .}} {{ range .}} {{ block "film-list-element" .}}
-      <li>
-        Id({{ .Id}}) {{ .Name }} - {{ .Content }}
-        <span>
-          <button
-            hx-delete="/delete/{{ .Id}}"
-            hx-trigger="click"
-            hx-target="#task-list"
-            hx-swap="innerHTML"
-            type="button"
-          >
-            x
-          </button>
-        </span>
-        <span>
-          <button
-            hx-get="/show-form/{{ .Id}}"
-            hx-trigger="click"
-            hx-target="#add-task"
-            hx-swap="innerHTML"
-            type="button"
-          >
-            update
-          </button>
-        </span>
-      </li>
-      {{ end }} {{ end }} {{end }}
-    </ul>
+<head>
+  <title>Task Manager</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://unpkg.com/htmx.org@1.9.2"
+    integrity="sha384-L6OqL9pRWyyFU3+/bjdSri+iIphTN/bvYyM37tICVyOJkWZLpP2vGn6VUEXgzg6h"
+    crossorigin="anonymous"></script>
+</head>
 
-    <div id="add-task">
-      <form
-        hx-post="/create"
-        hx-trigger="submit"
-        hx-target="#task-list"
-        hx-swap="beforeend"
-      >
-        <div>
-          <label for="">name:</label><input type="text" name="name" required />
-        </div>
-        <div>
-          <label for="">content:</label
-          ><input type="text" name="content" required />
-        </div>
+<body id="body">
+  <ul id="task-list">
+    {{ block "task-list" .}} {{ range .}} {{ block "film-list-element" .}}
+    <li>
+      Id({{ .Id}}) {{ .Name }} - {{ .Content }}
+      <span>
+        <button hx-delete="/delete/{{ .Id}}" hx-trigger="click" hx-target="#task-list" hx-swap="innerHTML"
+          type="button">
+          x
+        </button>
+      </span>
+      <span>
+        <button hx-get="/show-form/{{ .Id}}" hx-trigger="click" hx-target="#add-task" hx-swap="innerHTML" type="button">
+          update
+        </button>
+      </span>
+    </li>
+    {{ end }} {{ end }} {{end }}
+  </ul>
 
-        <button type="submit">Add</button>
-      </form>
+  <div id="add-task">
+    <form hx-post="/create" hx-trigger="submit" hx-target="#task-list" hx-swap="beforeend">
+      <div>
+        <label for="">name:</label><input type="text" name="name" required />
+      </div>
+      <div>
+        <label for="">content:</label><input type="text" name="content" required />
+      </div>
 
-      <button
-        type="button"
-        hx-delete="/delete-all"
-        hx-trigger="click"
-        hx-swap="innerHTML"
-        hx-target="#task-list"
-      >
-        delete all
-      </button>
-    </div>
-  </body>
+      <button type="submit">Add</button>
+    </form>
+
+    <button type="button" hx-delete="/delete-all" hx-trigger="click" hx-swap="innerHTML" hx-target="#task-list">
+      delete all
+    </button>
+  </div>
+</body>
+
 </html>

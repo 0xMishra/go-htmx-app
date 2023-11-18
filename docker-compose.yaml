@@ -2,7 +2,7 @@ version: '0.1'
 
 services:
   postgres:
-    image: postgres
+    image: postgres:latest
     container_name: my_psql
     env_file:
       - .env

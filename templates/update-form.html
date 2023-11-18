@@ -1,19 +1,12 @@
 <div>
   {{ block "film-update-element" .}}
-  <form
-    hx-post="/update-task/{{ .Id}}"
-    hx-trigger="submit"
-    hx-target="#task-list"
-    hx-swap="innerHTML"
-  >
+  <form hx-post="/update-task/{{ .Id}}" hx-trigger="submit" hx-target="#task-list" hx-swap="innerHTML">
     Id: {{ .Id}}
     <div class="">
-      <label for="">name:</label
-      ><input type="text" name="name" value="{{ .Name}}" required />
+      <label for="">name:</label><input type="text" name="name" value="{{ .Name}}" required />
     </div>
     <div class="">
-      <label for="">content:</label
-      ><input type="text" name="content" value="{{ .Content}}" required />
+      <label for="">content:</label><input type="text" name="content" value="{{ .Content}}" required />
     </div>
 
     <button type="submit">Update Task</button>
